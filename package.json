@@ -1,24 +1,22 @@
 {
-  "name": "my-pi-agent",
-  "version": "0.1.0",
-  "description": "Agentic coding tool package for Pi (extensions + prompts).",
-  "author": "pau tena",
-  "license": "MIT",
-  "keywords": [
-    "pi-package"
-  ],
-  "pi": {
-    "extensions": [
-      "./extensions"
-    ],
-    "skills": [
-      "./skills"
-    ],
-    "prompts": [
-      "./prompts"
-    ],
-    "themes": [
-      "./themes"
-    ]
-  }
+	"name": "my-pi-agent",
+	"version": "0.1.0",
+	"description": "Agentic coding tool package for Pi (extensions + prompts).",
+	"author": "pau tena",
+	"license": "MIT",
+	"scripts": {
+		"lint": "biome check .",
+		"check": "biome check .",
+		"format": "biome format . --write"
+	},
+	"keywords": ["pi-package"],
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4"
+	},
+	"pi": {
+		"extensions": ["./extensions"],
+		"skills": ["./skills"],
+		"prompts": ["./prompts"],
+		"themes": ["./themes"]
+	}
 }
