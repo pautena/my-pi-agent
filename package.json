@@ -5,13 +5,16 @@
 	"author": "pau tena",
 	"license": "MIT",
 	"scripts": {
-		"lint": "biome check .",
+		"lint": "biome check . && prettier --check \"**/*.md\"",
 		"check": "biome check .",
-		"format": "biome format . --write"
+		"check:md": "prettier --check \"**/*.md\"",
+		"format": "biome format . --write",
+		"format:md": "prettier --write \"**/*.md\""
 	},
 	"keywords": ["pi-package"],
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.4"
+		"@biomejs/biome": "^1.9.4",
+		"prettier": "^3.3.0"
 	},
 	"pi": {
 		"extensions": ["./extensions"],
