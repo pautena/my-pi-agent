@@ -38,54 +38,68 @@ Plan name provided: $ARGUMENTS
 # [Plan Title]
 
 ## Overview
+
 [Purpose in 1-3 sentences - what this plan achieves and why]
 
 ## Current State
+
 [What exists now, gaps identified, scope of work with counts]
 
 ## Target State / Specification
+
 [Schema, conventions, format definitions, data model mappings]
 
 ## Reference Data
+
 [ID mappings, file paths, quick lookup tables for execution]
 
 ## Workflow
+
 [Step-by-step repeatable process per item]
 
 ## Execution Phases
+
 [Ordered work breakdown - simple to complex, small to large]
 
 ### Phase 1 - [Name] (Priority/Size indicator)
+
 - [ ] Task A
 - [ ] Task B
 
 ### Phase 2 - [Name]
+
 - [ ] Task C
 - [ ] Task D
 
 ## Status Table
-| ID | Name | Expected | Actual | Status |
-|----|------|----------|--------|--------|
-| 1  | Item A | 0 | 0 | Pending |
+
+| ID  | Name   | Expected | Actual | Status  |
+| --- | ------ | -------- | ------ | ------- |
+| 1   | Item A | 0        | 0      | Pending |
 
 **Status icons**: Complete | Partial | Pending | In Progress | Blocked
 
 ## Progress Log
+
 [To be filled during execution - dates, totals, artifacts created]
 
 ## Notes
 
 ### Decisions Made
+
 [Document rationale for key choices]
 
 ### Open Questions
+
 [Unresolved items requiring user input]
 
 ---
-*Created: YYYY-MM-DD*
+
+_Created: YYYY-MM-DD_
 ```
 
 5. **Confirm save**:
+
    ```
    Plan saved: .agents/plans/YYYYMMDD_feature-name.md
 
@@ -115,17 +129,17 @@ Plan name provided: $ARGUMENTS
 
 ## Section Guidelines
 
-| Section | Required | Purpose |
-|---------|----------|---------|
-| Overview | Yes | 1-3 sentences on what and why |
-| Current State | Yes | Baseline, gaps, scope with counts |
-| Target State | If applicable | Schema, format, conventions |
-| Reference Data | If applicable | IDs, paths, lookup tables |
-| Workflow | Yes | Repeatable per-item process |
-| Execution Phases | Yes | Ordered tasks with checkboxes |
-| Status Table | For multi-item work | Progress tracking |
-| Progress Log | Yes (empty) | Filled during execution |
-| Notes | Yes | Decisions and open questions |
+| Section          | Required            | Purpose                           |
+| ---------------- | ------------------- | --------------------------------- |
+| Overview         | Yes                 | 1-3 sentences on what and why     |
+| Current State    | Yes                 | Baseline, gaps, scope with counts |
+| Target State     | If applicable       | Schema, format, conventions       |
+| Reference Data   | If applicable       | IDs, paths, lookup tables         |
+| Workflow         | Yes                 | Repeatable per-item process       |
+| Execution Phases | Yes                 | Ordered tasks with checkboxes     |
+| Status Table     | For multi-item work | Progress tracking                 |
+| Progress Log     | Yes (empty)         | Filled during execution           |
+| Notes            | Yes                 | Decisions and open questions      |
 
 ## Example
 
