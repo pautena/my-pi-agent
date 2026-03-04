@@ -12,10 +12,10 @@ npm install
 
 ## Commands
 
-| Command | Definition |
-| --- | --- |
-| `npm install` | Install npm dependencies for this repo |
-| `pi install /path/to/my-pi-agent` | Register prompts/skills/extensions globally in Pi |
+| Command                              | Definition                                               |
+| ------------------------------------ | -------------------------------------------------------- |
+| `npm install`                        | Install npm dependencies for this repo                   |
+| `pi install /path/to/my-pi-agent`    | Register prompts/skills/extensions globally in Pi        |
 | `pi install -l /path/to/my-pi-agent` | Register prompts/skills/extensions project-locally in Pi |
 
 ## Structure

@@ -7,6 +7,7 @@ You will read and execute a plan file phase by phase.
 ## Input
 
 User provides plan via:
+
 - File path argument: `/build-plan path/to/plan.md`
 - Context: Plan content in conversation
 - Interactive: List plans from `.agents/plans/` (if exists)
@@ -27,6 +28,7 @@ User provides plan via:
    - Look for phase completion markers: `- [x] Phase {n}:` or `✓ Phase {n}:`
    - If completed phases found:
      - Output:
+
        ```
        Resuming plan: {goal}
 
@@ -38,13 +40,16 @@ User provides plan via:
        - Phase {m}: {name}
        ...
        ```
+
      - Skip to first incomplete phase
+
    - Else: start from beginning
 
 3. **Parse and summarize**:
    - Extract goal/objective
    - Extract all phases with tasks
    - Output:
+
      ```
      Plan: {goal}
 
@@ -96,7 +101,6 @@ User provides plan via:
        3. Commit and continue
        4. Commit and pause
        5. Continue (no commit)
-
        - If 1: pause, wait for user fixes
        - If 2: revert changes with `git checkout`
        - If 3: generate commit, continue
