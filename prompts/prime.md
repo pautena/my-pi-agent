@@ -1,0 +1,23 @@
+---
+description: Load context for a new agent session by analyzing codebase structure, documentation and README
+---
+
+# Prime
+
+Run the commands under the `Execute` section to gather information about the project, and then review the files listed under `Read` to understand the project's purpose and functionality then `Report` your findings.
+
+## Execute
+
+- `git ls-files`
+
+## Read
+
+- README.md
+- CLAUDE.md (if exists)
+
+## Report
+
+- Provide a summary of your understanding of the project
+- Key directories and their purpose
+- Main technologies/frameworks used
+- Entry points and important files

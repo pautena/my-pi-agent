@@ -1,0 +1,24 @@
+{
+  "name": "my-pi-agent",
+  "version": "0.1.0",
+  "description": "Agentic coding tool package for Pi (extensions + prompts).",
+  "author": "pau tena",
+  "license": "MIT",
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions"
+    ],
+    "skills": [
+      "./skills"
+    ],
+    "prompts": [
+      "./prompts"
+    ],
+    "themes": [
+      "./themes"
+    ]
+  }
+}
