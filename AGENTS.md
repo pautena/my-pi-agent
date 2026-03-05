@@ -23,7 +23,15 @@ npm install
 ```
 .
 ├── extensions/
+│   ├── active-skills-widget.ts
+│   ├── download-webpage.ts
+│   └── web-search.ts
 ├── prompts/
+│   ├── build-plan.md
+│   ├── extract-skill.md
+│   ├── init.md
+│   ├── prime.md
+│   └── save-plan.md
 ├── skills/
 │   ├── meta-prompt/
 │   └── meta-skill/
@@ -31,6 +39,31 @@ npm install
 └── README.md
 ```
 
+## Extensions
+
+| Extension              | Description                                                                                         | File                                 |
+| ---------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `active-skills-widget` | Displays active skills list under the editor.                                                       | `extensions/active-skills-widget.ts` |
+| `web-search`           | `ollama_web_search` and `ollama_web_fetch` tools via Ollama API (requires `OLLAMA_API_KEY`).         | `extensions/web-search.ts`           |
+| `download-webpage`     | `download_webpage` tool that fetches a webpage directly and saves it to a file. No API key needed. | `extensions/download-webpage.ts`     |
+
+## Prompt Templates
+
+| Command          | Description                                                        | File                       |
+| ---------------- | ------------------------------------------------------------------- | -------------------------- |
+| `/build-plan`    | Execute a plan file phase by phase with test validation.            | `prompts/build-plan.md`    |
+| `/extract-skill` | Extract a new skill from a codebase and generate a SKILL.md.        | `prompts/extract-skill.md` |
+| `/init`          | Generate or update AGENTS.md with auto-detected project context.    | `prompts/init.md`          |
+| `/prime`         | Load context for a new agent session.                               | `prompts/prime.md`         |
+| `/save-plan`     | Save implementation plan to `.agents/plans/` with standard template. | `prompts/save-plan.md`     |
+
+## Skills
+
+| Skill         | Description                                             | File                    |
+| ------------- | ------------------------------------------------------- | ----------------------- |
+| `meta-prompt` | Generate pi prompt templates with arguments and steps.  | `skills/meta-prompt/`   |
+| `meta-skill`  | Generate a pi skill (SKILL.md) from codebase patterns. | `skills/meta-skill/`    |
+
 ## Notes
 
-- Extensions and prompts are listed in README.md.
+- See README.md for detailed documentation.

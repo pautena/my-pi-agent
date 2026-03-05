@@ -32,7 +32,7 @@ pi install -l /absolute/path/to/my-pi-agent
 
 - `skills/` - Meta skills for prompt/skill generation.
 - `prompts/` - Prompt templates invoked via `/<name>`.
-- `extensions/` - Pi extensions (Ollama web search + fetch).
+- `extensions/` - Pi extensions (download_webpage, ollama_web_search, ollama_web_fetch, active-skills-widget).
 - `themes/` - Reserved for custom themes (currently empty).
 
 ## Skills
@@ -58,3 +58,4 @@ pi install -l /absolute/path/to/my-pi-agent
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
 | `active-skills-widget` | Displays the active skills list under the editor as comma-separated values, or `No skill loaded` when none are available.                                                      | `extensions/active-skills-widget.ts` |
 | `web-search`           | Registers `ollama_web_search` and `ollama_web_fetch` tools that call the local MCP CLI via `uv run` (requires `OLLAMA_API_KEY`; optional `OLLAMA_WEB_SEARCH_SCRIPT` override). | `extensions/web-search.ts`           |
+| `download-webpage`     | Registers `download_webpage` tool that fetches a webpage directly and saves it to a file. Supports custom file paths and timeouts.                                            | `extensions/download-webpage.ts`     |

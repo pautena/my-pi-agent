@@ -103,12 +103,12 @@ function toSuccessResponse(data: unknown) {
 	} as const;
 }
 
-export default function registerOllamaWebSearch(pi: ExtensionAPI) {
+export default function registerWebSearch(pi: ExtensionAPI) {
 	pi.registerTool({
-		name: "ollama_web_search",
-		label: "Ollama Web Search",
+		name: "web_search",
+		label: "Web Search",
 		description:
-			"Search the web via Ollama's hosted search API (requires OLLAMA_API_KEY).",
+			"Search the web for information. Use this tool to find relevant web pages, articles, documentation, or answers to questions. For fetching/downloading the full content of a specific webpage, use the appropriate web fetch tool instead.",
 		parameters: Type.Object({
 			query: Type.String({ description: "Search query" }),
 			maxResults: Type.Optional(
@@ -132,10 +132,10 @@ export default function registerOllamaWebSearch(pi: ExtensionAPI) {
 	});
 
 	pi.registerTool({
-		name: "ollama_web_fetch",
-		label: "Ollama Web Fetch",
+		name: "web_fetch",
+		label: "Web Fetch",
 		description:
-			"Fetch a web page via Ollama's hosted web fetch API (requires OLLAMA_API_KEY).",
+			"Fetch the full content of a web page by URL. Use this to retrieve the complete content of a specific page. For searching the web to find relevant pages, use the web_search tool instead.",
 		parameters: Type.Object({
 			url: Type.String({ description: "Absolute URL to fetch" }),
 		}),
