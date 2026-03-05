@@ -64,6 +64,12 @@ npm install
 | `meta-prompt` | Generate pi prompt templates with arguments and steps.  | `skills/meta-prompt/`   |
 | `meta-skill`  | Generate a pi skill (SKILL.md) from codebase patterns. | `skills/meta-skill/`    |
 
+## Extension Development
+
+- All extensions must be located in the `extensions/` directory.
+- When creating a new extension, place it at `extensions/<extension-name>/`.
+- Each extension should follow the standard structure with an `index.ts` entry point.
+
 ## Notes
 
 - See README.md for detailed documentation.
