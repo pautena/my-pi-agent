@@ -23,9 +23,10 @@ npm install
 ```
 .
 ├── extensions/
-│   ├── active-skills-widget.ts
-│   ├── download-webpage.ts
-│   └── web-search.ts
+│   ├── active-skills-widget/
+│   │   └── index.ts
+│   └── web-search/
+│       └── index.ts
 ├── prompts/
 │   ├── build-plan.md
 │   ├── extract-skill.md
@@ -41,11 +42,10 @@ npm install
 
 ## Extensions
 
-| Extension              | Description                                                                                         | File                                 |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `active-skills-widget` | Displays active skills list under the editor.                                                       | `extensions/active-skills-widget.ts` |
-| `web-search`           | `ollama_web_search` and `ollama_web_fetch` tools via Ollama API (requires `OLLAMA_API_KEY`).         | `extensions/web-search.ts`           |
-| `download-webpage`     | `download_webpage` tool that fetches a webpage directly and saves it to a file. No API key needed. | `extensions/download-webpage.ts`     |
+| Extension              | Description                                                                                 | File                                    |
+| ---------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `active-skills-widget` | Displays active skills list under the editor.                                               | `extensions/active-skills-widget/index.ts` |
+| `web-search`           | `ollama_web_search` and `ollama_web_fetch` tools via Ollama API (requires `OLLAMA_API_KEY`). | `extensions/web-search/index.ts`           |
 
 ## Prompt Templates
 
