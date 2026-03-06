@@ -37,21 +37,31 @@ npm run check:types
 
 ## Test Structure
 
-The test suite mirrors the extension structure for better organization:
+Tests are placed alongside the source files they test for better discoverability:
 
 ```
 tests/
 ├── setup.ts                      # Global test setup (environment variables)
-├── mocks/                        # Reusable mock factories
-│   ├── index.ts                  # Export all mocks
-│   ├── pi.ts                     # Pi extension mocks (API, Context)
-│   └── fetch.ts                  # Fetch API mocks
-└── extensions/                   # Extension tests (mirrors extensions/ folder)
-    ├── active-skills-widget.test.ts
-    └── web-search.test.ts
+└── mocks/                        # Reusable mock factories
+    ├── index.ts                  # Export all mocks
+    ├── pi.ts                     # Pi extension mocks (API, Context)
+    └── fetch.ts                  # Fetch API mocks
+
+extensions/
+├── active-skills-widget/
+│   ├── index.ts                  + index.test.ts
+│   ├── handlers.ts               + handlers.test.ts
+│   ├── utils.ts                  + utils.test.ts
+│   ├── ui.ts
+│   └── types.ts
+└── web-search/
+    ├── index.ts                  + index.test.ts
+    ├── handlers.ts               + handlers.test.ts
+    ├── utils.ts                  + utils.test.ts
+    └── types.ts
 ```
 
-This structure ensures that tests for extensions are located in `tests/extensions/` to match the `extensions/` directory layout.
+The `tests/` folder contains only shared infrastructure (setup and mocks), while individual test files live next to their corresponding source modules.
 
 ## Setup Global Environment
 
@@ -191,7 +201,7 @@ Use the AAA (Arrange-Act-Assert) pattern with Vitest:
 
 ```typescript
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { createMockExtensionAPI } from "@tests/mocks";
+import { createMockExtensionAPI } from "../../tests/mocks";
 
 describe("my-extension", () => {
   beforeEach(() => {
@@ -201,7 +211,7 @@ describe("my-extension", () => {
   it("should register tools", async () => {
     // Arrange
     const mockApi = createMockExtensionAPI();
-    const extension = await import("../../extensions/my-extension/index.ts");
+    const extension = await import("./index.js");
 
     // Act
     extension.default(mockApi);
@@ -212,7 +222,7 @@ describe("my-extension", () => {
 });
 ```
 
-**Note**: Use the `@tests/` path alias for importing mocks and test utilities. Extensions are imported relative to the test file location.
+**Note**: Use the `../../tests/mocks` path to import mocks from test files. Source modules are imported relative to the test file (e.g., `./index.js` for a test file named `index.test.ts`).
 
 ### Testing with Environment Variables
 
@@ -220,6 +230,7 @@ For tests that need specific environment values:
 
 ```typescript
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createMockExtensionAPI } from "../../tests/mocks";
 
 describe("extension with config", () => {
   beforeEach(() => {
@@ -232,7 +243,7 @@ describe("extension with config", () => {
     Reflect.deleteProperty(process.env, "MY_API_KEY");
 
     const mockApi = createMockExtensionAPI();
-    const extension = await import("../../extensions/my-extension/index.ts");
+    const extension = await import("./index.js");
     extension.default(mockApi);
 
     // Test behavior without API key
@@ -248,8 +259,12 @@ Use fetch mocks to test external API interactions:
 
 ```typescript
 import { describe, expect, it, vi } from "vitest";
-import { createMockExtensionAPI, type MockRegisterTool } from "@tests/mocks";
-import { createSuccessResponse, createErrorResponse } from "@tests/mocks";
+import {
+  createMockExtensionAPI,
+  type MockRegisterTool,
+  createSuccessResponse,
+  createErrorResponse,
+} from "../../tests/mocks";
 
 describe("web-api-extension", () => {
   const mockFetch = vi.fn();
@@ -259,7 +274,7 @@ describe("web-api-extension", () => {
     // Arrange
     mockFetch.mockResolvedValueOnce(createSuccessResponse({ data: "result" }));
     const mockApi = createMockExtensionAPI();
-    const extension = await import("../../extensions/my-extension/index.ts");
+    const extension = await import("./index.js");
     extension.default(mockApi);
 
     // Act
@@ -281,7 +296,7 @@ describe("web-api-extension", () => {
     // Arrange
     mockFetch.mockResolvedValueOnce(createErrorResponse(404, "Not Found"));
     const mockApi = createMockExtensionAPI();
-    const extension = await import("../../extensions/my-extension/index.ts");
+    const extension = await import("./index.js");
     extension.default(mockApi);
 
     // Act
@@ -322,7 +337,7 @@ coverage: {
 	provider: "v8",
 	reporter: ["text", "json", "html"],
 	include: ["extensions/**/*.ts"],
-	exclude: ["node_modules", "test", "**/*.d.ts"],
+	exclude: ["node_modules", "tests", "**/*.test.ts", "**/*.d.ts"],
 },
 ```
 
@@ -404,4 +419,5 @@ it("debug test", async () => {
 
 - [Vitest Documentation](https://vitest.dev/)
 - [Testing Best Practices](https://testingjavascript.com/)
-- Project source: `tests/` directory
+- Project mocks: `tests/mocks/` directory
+- Project tests: alongside source files in `extensions/*/`

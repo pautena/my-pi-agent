@@ -1,4 +1,3 @@
-import { resolve } from "node:path";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -6,18 +5,13 @@ export default defineConfig({
 		globals: true,
 		environment: "node",
 		setupFiles: ["./tests/setup.ts"],
-		include: ["tests/**/*.test.ts"],
+		include: ["tests/**/*.test.ts", "extensions/**/*.test.ts"],
 		exclude: ["node_modules", "dist"],
 		coverage: {
 			provider: "v8",
 			reporter: ["text", "json", "html"],
 			include: ["extensions/**/*.ts"],
-			exclude: ["node_modules", "tests"],
-		},
-	},
-	resolve: {
-		alias: {
-			"@tests": resolve(__dirname, "./tests"),
+			exclude: ["node_modules", "tests", "**/*.test.ts"],
 		},
 	},
 });
