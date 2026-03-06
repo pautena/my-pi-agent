@@ -3,8 +3,8 @@ import { requestJson } from "./handlers.js";
 import {
 	toErrorResponse,
 	toSuccessResponse,
-	webSearchTool,
 	webFetchTool,
+	webSearchTool,
 } from "./utils.js";
 
 export default function registerWebSearch(pi: ExtensionAPI) {

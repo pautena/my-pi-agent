@@ -1,4 +1,7 @@
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type {
+	ExtensionAPI,
+	ExtensionContext,
+} from "@mariozechner/pi-coding-agent";
 import { ENTRY_TYPE } from "./types.js";
 import { updateStatus } from "./ui.js";
 

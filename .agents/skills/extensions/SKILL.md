@@ -21,13 +21,13 @@ Use this skill when:
 
 All extensions follow a **consistent 4-5 file structure**:
 
-| File | Purpose | Contains |
-|------|---------|----------|
-| **`index.ts`** | PI registrations | Only `pi.registerTool()` or `pi.on()` calls |
-| **`types.ts`** | Constants + Types | Constants, type definitions, config functions |
-| **`utils.ts`** | Utilities + Tools | Helper functions, tool definitions/schemas |
-| **`handlers.ts`** | Core logic | Request handlers, event handlers, business logic |
-| **`ui.ts`** | UI functions | UI-specific functions (only when needed) |
+| File              | Purpose           | Contains                                         |
+| ----------------- | ----------------- | ------------------------------------------------ |
+| **`index.ts`**    | PI registrations  | Only `pi.registerTool()` or `pi.on()` calls      |
+| **`types.ts`**    | Constants + Types | Constants, type definitions, config functions    |
+| **`utils.ts`**    | Utilities + Tools | Helper functions, tool definitions/schemas       |
+| **`handlers.ts`** | Core logic        | Request handlers, event handlers, business logic |
+| **`ui.ts`**       | UI functions      | UI-specific functions (only when needed)         |
 
 ## Directory Structure
 
@@ -48,6 +48,7 @@ extensions/
 **Purpose**: Entry point for the extension. Contains ONLY registration calls.
 
 **For Tool Extensions**:
+
 ```typescript
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { executeHandler } from "./handlers.js";
@@ -64,8 +65,12 @@ export default function registerExtension(pi: ExtensionAPI) {
 ```
 
 **For Event Extensions**:
+
 ```typescript
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type {
+  ExtensionAPI,
+  ExtensionContext,
+} from "@mariozechner/pi-coding-agent";
 import { handleCustomEvent } from "./handlers.js";
 
 export default function (pi: ExtensionAPI) {
@@ -76,6 +81,7 @@ export default function (pi: ExtensionAPI) {
 ```
 
 **Guidelines**:
+
 - Keep this file minimal - only registrations
 - Import handlers from `handlers.ts`
 - Import tool definitions from `utils.ts`
@@ -107,6 +113,7 @@ export function getApiKey(): string | null {
 ```
 
 **Guidelines**:
+
 - Export all constants with `export const`
 - Export all types with `export type`
 - Config functions that read from `process.env` belong here
@@ -143,6 +150,7 @@ export const searchTool = {
 ```
 
 **Guidelines**:
+
 - Pure utility functions with no side effects
 - Tool schemas and definitions using TypeBox
 - Response formatting helpers
@@ -184,16 +192,17 @@ export async function executeHandler(
   signal?: AbortSignal,
 ) {
   const result = await fetchData("/search", { query: params.query }, signal);
-  
+
   if (!result.ok) {
     return { isError: true, content: [{ type: "text", text: result.message }] };
   }
-  
+
   return formatResponse(result.data);
 }
 ```
 
 **Guidelines**:
+
 - Handle all external API calls
 - Implement business logic
 - Process and transform data
@@ -211,18 +220,19 @@ import { STATUS_ID } from "./types.js";
 
 export function updateStatus(message: string, ctx: ExtensionContext): void {
   if (!ctx.hasUI) return;
-  
+
   ctx.ui.setStatus(STATUS_ID, ctx.ui.theme.fg("dim", message));
 }
 
 export function displayError(error: string, ctx: ExtensionContext): void {
   if (!ctx.hasUI) return;
-  
+
   ctx.ui.setStatus(STATUS_ID, ctx.ui.theme.fg("red", error));
 }
 ```
 
 **Guidelines**:
+
 - Only include when extension has UI components
 - Always check `ctx.hasUI` before calling UI methods
 - Use theme functions for consistent styling
@@ -241,6 +251,7 @@ extensions/web-search/
 ```
 
 **Key Points**:
+
 - No `ui.ts` needed (no UI components)
 - Tool schemas in `utils.ts`
 - API request logic in `handlers.ts`
@@ -258,6 +269,7 @@ extensions/active-skills-widget/
 ```
 
 **Key Points**:
+
 - Has `ui.ts` for UI status updates
 - Constants in `types.ts`
 - Event handlers in `handlers.ts`
@@ -321,6 +333,7 @@ export async function handleRequest(params: { input: string }) {
 ### Step 5: Create `index.ts`
 
 **For Tools**:
+
 ```typescript
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { handleRequest } from "./handlers.js";
@@ -337,8 +350,12 @@ export default function register(pi: ExtensionAPI) {
 ```
 
 **For Events**:
+
 ```typescript
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type {
+  ExtensionAPI,
+  ExtensionContext,
+} from "@mariozechner/pi-coding-agent";
 import { handleRequest } from "./handlers.js";
 
 export default function register(pi: ExtensionAPI) {
@@ -373,7 +390,7 @@ When refactoring an existing extension to this structure:
 ## Best Practices
 
 1. **Single Responsibility**: Each file has one clear purpose
-2. **Dependency Direction**: 
+2. **Dependency Direction**:
    - `index.ts` → depends on all
    - `handlers.ts` → depends on `types.ts`, `utils.ts`
    - `utils.ts` → depends on nothing (pure)

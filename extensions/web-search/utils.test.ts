@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { truncate, toErrorResponse, toSuccessResponse } from "./utils.js";
+import { toErrorResponse, toSuccessResponse, truncate } from "./utils.js";
 
 describe("utils", () => {
 	describe("truncate", () => {

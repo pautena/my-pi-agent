@@ -1,5 +1,5 @@
 import type { RequestResult } from "./types.js";
-import { resolveBaseUrl, getApiKey } from "./types.js";
+import { getApiKey, resolveBaseUrl } from "./types.js";
 import { truncate } from "./utils.js";
 
 export async function requestJson(

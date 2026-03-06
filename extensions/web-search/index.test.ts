@@ -1,10 +1,10 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	type MockRegisterTool,
 	createMockExtensionAPI,
 	createSuccessResponse,
 } from "../../tests/mocks";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock fetch globally
 const mockFetch = vi.fn();

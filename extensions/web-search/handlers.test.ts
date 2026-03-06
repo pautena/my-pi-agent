@@ -127,7 +127,11 @@ describe("handlers", () => {
 				text: async () => JSON.stringify({ data: "test" }),
 			});
 
-			await requestJson("/api/web_search", { query: "test" }, controller.signal);
+			await requestJson(
+				"/api/web_search",
+				{ query: "test" },
+				controller.signal,
+			);
 
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.any(String),

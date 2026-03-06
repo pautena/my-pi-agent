@@ -1,6 +1,9 @@
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type {
+	ExtensionAPI,
+	ExtensionContext,
+} from "@mariozechner/pi-coding-agent";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { refreshFromSession, addSkill, handleInput } from "./handlers.js";
+import { addSkill, handleInput, refreshFromSession } from "./handlers.js";
 import { ENTRY_TYPE } from "./types.js";
 
 describe("handlers", () => {
@@ -27,7 +30,9 @@ describe("handlers", () => {
 		});
 
 		it("should return empty set when no skills are loaded", () => {
-			(mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>).mockReturnValue([]);
+			(
+				mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>
+			).mockReturnValue([]);
 
 			const result = refreshFromSession(mockContext, mockApi);
 
@@ -40,7 +45,9 @@ describe("handlers", () => {
 				{ type: "custom", customType: ENTRY_TYPE, data: { name: "skill2" } },
 				{ type: "other", data: {} },
 			];
-			(mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>).mockReturnValue(entries);
+			(
+				mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>
+			).mockReturnValue(entries);
 
 			const result = refreshFromSession(mockContext, mockApi);
 
@@ -54,7 +61,9 @@ describe("handlers", () => {
 				{ type: "custom", customType: ENTRY_TYPE, data: { name: "   " } },
 				{ type: "custom", customType: ENTRY_TYPE, data: {} },
 			];
-			(mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>).mockReturnValue(entries);
+			(
+				mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>
+			).mockReturnValue(entries);
 
 			const result = refreshFromSession(mockContext, mockApi);
 
@@ -65,7 +74,9 @@ describe("handlers", () => {
 			const entries = [
 				{ type: "custom", customType: ENTRY_TYPE, data: { name: "skill1" } },
 			];
-			(mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>).mockReturnValue(entries);
+			(
+				mockContext.sessionManager.getEntries as ReturnType<typeof vi.fn>
+			).mockReturnValue(entries);
 			(mockContext as unknown as { hasUI: boolean }).hasUI = true;
 
 			refreshFromSession(mockContext, mockApi);
@@ -99,13 +110,20 @@ describe("handlers", () => {
 			const result = addSkill("new-skill", loadedSkills, mockContext, mockApi);
 
 			expect(result.has("new-skill")).toBe(true);
-			expect(mockApi.appendEntry).toHaveBeenCalledWith(ENTRY_TYPE, { name: "new-skill" });
+			expect(mockApi.appendEntry).toHaveBeenCalledWith(ENTRY_TYPE, {
+				name: "new-skill",
+			});
 		});
 
 		it("should not add duplicate skills", () => {
 			const loadedSkills = new Set(["existing-skill"]);
 
-			const result = addSkill("existing-skill", loadedSkills, mockContext, mockApi);
+			const result = addSkill(
+				"existing-skill",
+				loadedSkills,
+				mockContext,
+				mockApi,
+			);
 
 			expect(result.size).toBe(1);
 			expect(mockApi.appendEntry).not.toHaveBeenCalled();
@@ -144,9 +162,24 @@ describe("handlers", () => {
 		});
 
 		it("should return continue for all inputs", () => {
-			const result1 = handleInput({ source: "user", text: "/skill:test" }, mockContext, mockApi, loadedSkills);
-			const result2 = handleInput({ source: "user", text: "regular" }, mockContext, mockApi, loadedSkills);
-			const result3 = handleInput({ source: "extension", text: "/skill:test" }, mockContext, mockApi, loadedSkills);
+			const result1 = handleInput(
+				{ source: "user", text: "/skill:test" },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
+			const result2 = handleInput(
+				{ source: "user", text: "regular" },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
+			const result3 = handleInput(
+				{ source: "extension", text: "/skill:test" },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
 
 			expect(result1).toEqual({ action: "continue" });
 			expect(result2).toEqual({ action: "continue" });
@@ -154,31 +187,60 @@ describe("handlers", () => {
 		});
 
 		it("should ignore input from extensions", () => {
-			handleInput({ source: "extension", text: "/skill:test" }, mockContext, mockApi, loadedSkills);
+			handleInput(
+				{ source: "extension", text: "/skill:test" },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
 
 			expect(mockApi.appendEntry).not.toHaveBeenCalled();
 		});
 
 		it("should ignore input without /skill: prefix", () => {
-			handleInput({ source: "user", text: "regular input" }, mockContext, mockApi, loadedSkills);
+			handleInput(
+				{ source: "user", text: "regular input" },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
 
 			expect(mockApi.appendEntry).not.toHaveBeenCalled();
 		});
 
 		it("should add skill from /skill: command", () => {
-			handleInput({ source: "user", text: "/skill:my-skill" }, mockContext, mockApi, loadedSkills);
+			handleInput(
+				{ source: "user", text: "/skill:my-skill" },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
 
-			expect(mockApi.appendEntry).toHaveBeenCalledWith(ENTRY_TYPE, { name: "my-skill" });
+			expect(mockApi.appendEntry).toHaveBeenCalledWith(ENTRY_TYPE, {
+				name: "my-skill",
+			});
 		});
 
 		it("should extract only first word after /skill:", () => {
-			handleInput({ source: "user", text: "/skill:skill-name extra words" }, mockContext, mockApi, loadedSkills);
+			handleInput(
+				{ source: "user", text: "/skill:skill-name extra words" },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
 
-			expect(mockApi.appendEntry).toHaveBeenCalledWith(ENTRY_TYPE, { name: "skill-name" });
+			expect(mockApi.appendEntry).toHaveBeenCalledWith(ENTRY_TYPE, {
+				name: "skill-name",
+			});
 		});
 
 		it("should handle empty /skill: command", () => {
-			handleInput({ source: "user", text: "/skill:   " }, mockContext, mockApi, loadedSkills);
+			handleInput(
+				{ source: "user", text: "/skill:   " },
+				mockContext,
+				mockApi,
+				loadedSkills,
+			);
 
 			expect(mockApi.appendEntry).not.toHaveBeenCalled();
 		});
