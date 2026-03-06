@@ -8,6 +8,7 @@ describe("ui.updateStatus", () => {
 		const fg = vi.fn((_, txt) => `dim:${txt}`);
 		const ctx: ExtensionContext = {
 			hasUI: true,
+			sessionManager: { getEntries: vi.fn(() => []) },
 			ui: {
 				setStatus,
 				theme: { fg },
@@ -27,7 +28,8 @@ describe("ui.updateStatus", () => {
 		const setStatus = vi.fn();
 		const ctx = {
 			hasUI: false,
-			ui: { setStatus },
+			sessionManager: { getEntries: vi.fn(() => []) },
+			ui: { setStatus, theme: { fg: vi.fn() } },
 		};
 
 		updateStatus(["skillA"], ctx);
