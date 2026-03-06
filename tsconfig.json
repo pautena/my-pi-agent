@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"lib": ["ES2022"],
+		"types": ["node"],
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"outDir": "./dist",
+		"rootDir": ".",
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
+		"paths": {
+			"@tests/*": ["./tests/*"],
+			"@mariozechner/pi-coding-agent": ["./types/pi-coding-agent/index.d.ts"]
+		}
+	},
+	"include": ["extensions/**/*", "tests/**/*"],
+	"exclude": ["node_modules", "dist"]
+}

@@ -26,3 +26,12 @@ jobs:
 
       - name: Check Markdown formatting
         run: npm run check:md
+
+      - name: Check TypeScript types
+        run: npm run check:types
+        continue-on-error: true
+        # Note: Type errors related to '@mariozechner/pi-coding-agent' are expected
+        # as that package is provided by the Pi runtime, not installed locally
+
+      - name: Run tests
+        run: npm run test:run

@@ -16,3 +16,9 @@ pnpm-debug.log*
 Thumbs.db
 .idea/
 .vscode/
+
+# Build output
+dist/
+
+# Test coverage
+coverage/

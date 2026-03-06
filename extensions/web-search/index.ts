@@ -1,121 +1,20 @@
-import type {
-	ExtensionAPI,
-	ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
-import { Type } from "@sinclair/typebox";
-
-const DEFAULT_BASE_URL = "https://ollama.com";
-
-function resolveBaseUrl(): string {
-	const envBaseUrl = process.env.OLLAMA_WEB_SEARCH_BASE_URL;
-	return (envBaseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
-}
-
-function getApiKey(): string | null {
-	return process.env.OLLAMA_API_KEY ?? null;
-}
-
-function truncate(text: string, maxLength = 2000): string {
-	if (text.length <= maxLength) {
-		return text;
-	}
-	return `${text.slice(0, maxLength)}…`;
-}
-
-type RequestResult =
-	| { ok: true; data: unknown }
-	| { ok: false; message: string };
-
-async function requestJson(
-	endpoint: string,
-	body: Record<string, unknown>,
-	signal?: AbortSignal,
-): Promise<RequestResult> {
-	const apiKey = getApiKey();
-	if (!apiKey) {
-		return {
-			ok: false,
-			message:
-				"OLLAMA_API_KEY is not set. Configure it in your environment to use Ollama web search.",
-		};
-	}
-
-	const url = `${resolveBaseUrl()}${endpoint}`;
-	let response: Response;
-
-	try {
-		response = await fetch(url, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${apiKey}`,
-			},
-			body: JSON.stringify(body),
-			signal,
-		});
-	} catch (error) {
-		return {
-			ok: false,
-			message: `Failed to reach Ollama web search endpoint (${url}): ${String(error)}`,
-		};
-	}
-
-	const text = await response.text();
-	if (!response.ok) {
-		const detail = text ? ` Response: ${truncate(text)}` : "";
-		return {
-			ok: false,
-			message: `Ollama web search request failed (${response.status} ${response.statusText}).${detail}`,
-		};
-	}
-
-	if (!text.trim()) {
-		return {
-			ok: false,
-			message: `Ollama web search returned an empty response from ${url}.`,
-		};
-	}
-
-	try {
-		return { ok: true, data: JSON.parse(text) as unknown };
-	} catch (error) {
-		return {
-			ok: false,
-			message: `Failed to parse JSON response from ${url}: ${String(error)}. Raw: ${truncate(
-				text,
-			)}`,
-		};
-	}
-}
-
-function toErrorResponse(message: string) {
-	return {
-		content: [{ type: "text", text: message }],
-		details: { error: message },
-		isError: true,
-	} as const;
-}
-
-function toSuccessResponse(data: unknown) {
-	return {
-		content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-		details: { data },
-	} as const;
-}
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { requestJson } from "./handlers.js";
+import {
+	toErrorResponse,
+	toSuccessResponse,
+	webFetchTool,
+	webSearchTool,
+} from "./utils.js";
 
 export default function registerWebSearch(pi: ExtensionAPI) {
 	pi.registerTool({
-		name: "web_search",
-		label: "Web Search",
-		description:
-			"Search the web for information. Use this tool to find relevant web pages, articles, documentation, or answers to questions. For fetching/downloading the full content of a specific webpage, use the appropriate web fetch tool instead.",
-		parameters: Type.Object({
-			query: Type.String({ description: "Search query" }),
-			maxResults: Type.Optional(
-				Type.Integer({ description: "Max results (default: 3)", minimum: 1 }),
-			),
-		}),
-		async execute(_toolCallId, params, signal) {
+		...webSearchTool,
+		async execute(
+			_toolCallId: string,
+			params: { query: string; maxResults?: number },
+			signal?: AbortSignal,
+		) {
 			const maxResults = params.maxResults ?? 3;
 			const response = await requestJson(
 				"/api/web_search",
@@ -132,14 +31,12 @@ export default function registerWebSearch(pi: ExtensionAPI) {
 	});
 
 	pi.registerTool({
-		name: "web_fetch",
-		label: "Web Fetch",
-		description:
-			"Fetch the full content of a web page by URL. Use this to retrieve the complete content of a specific page. For searching the web to find relevant pages, use the web_search tool instead.",
-		parameters: Type.Object({
-			url: Type.String({ description: "Absolute URL to fetch" }),
-		}),
-		async execute(_toolCallId, params, signal) {
+		...webFetchTool,
+		async execute(
+			_toolCallId: string,
+			params: { url: string },
+			signal?: AbortSignal,
+		) {
 			const response = await requestJson(
 				"/api/web_fetch",
 				{ url: params.url },
