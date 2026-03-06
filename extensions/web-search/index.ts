@@ -1,7 +1,4 @@
-import type {
-	ExtensionAPI,
-	ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 
 const DEFAULT_BASE_URL = "https://ollama.com";
@@ -115,7 +112,11 @@ export default function registerWebSearch(pi: ExtensionAPI) {
 				Type.Integer({ description: "Max results (default: 3)", minimum: 1 }),
 			),
 		}),
-		async execute(_toolCallId, params, signal) {
+		async execute(
+			_toolCallId: string,
+			params: { query: string; maxResults?: number },
+			signal?: AbortSignal,
+		) {
 			const maxResults = params.maxResults ?? 3;
 			const response = await requestJson(
 				"/api/web_search",
@@ -139,7 +140,11 @@ export default function registerWebSearch(pi: ExtensionAPI) {
 		parameters: Type.Object({
 			url: Type.String({ description: "Absolute URL to fetch" }),
 		}),
-		async execute(_toolCallId, params, signal) {
+		async execute(
+			_toolCallId: string,
+			params: { url: string },
+			signal?: AbortSignal,
+		) {
 			const response = await requestJson(
 				"/api/web_fetch",
 				{ url: params.url },

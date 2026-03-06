@@ -8,18 +8,29 @@
 		"lint": "biome check . && prettier --check \"**/*.md\"",
 		"check": "biome check .",
 		"check:md": "prettier --check \"**/*.md\"",
+		"check:types": "tsc --noEmit",
 		"format": "biome format . --write",
-		"format:md": "prettier --write \"**/*.md\""
+		"format:md": "prettier --write \"**/*.md\"",
+		"test": "vitest",
+		"test:run": "vitest run",
+		"test:coverage": "vitest run --coverage"
 	},
 	"keywords": ["pi-package"],
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
-		"prettier": "^3.3.0"
+		"@types/node": "^25.3.5",
+		"@vitest/coverage-v8": "^4.0.18",
+		"prettier": "^3.3.0",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.18"
 	},
 	"pi": {
 		"extensions": ["./extensions"],
-		"skills": ["./skills"],
+		"skills": ["./.agents/skills"],
 		"prompts": ["./prompts"],
 		"themes": ["./themes"]
+	},
+	"dependencies": {
+		"@sinclair/typebox": "^0.34.48"
 	}
 }

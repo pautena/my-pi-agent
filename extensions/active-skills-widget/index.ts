@@ -1,6 +1,7 @@
 import type {
 	ExtensionAPI,
 	ExtensionContext,
+	InputEvent,
 } from "@mariozechner/pi-coding-agent";
 
 const ENTRY_TYPE = "active-skill";
@@ -26,7 +27,8 @@ export default function (pi: ExtensionAPI) {
 		loadedSkills = new Set();
 		for (const entry of ctx.sessionManager.getEntries()) {
 			if (entry.type === "custom" && entry.customType === ENTRY_TYPE) {
-				const name = entry.data?.name;
+				const data = entry.data as { name?: string } | undefined;
+				const name = data?.name;
 				if (typeof name === "string" && name.trim().length > 0) {
 					loadedSkills.add(name);
 				}
@@ -44,25 +46,26 @@ export default function (pi: ExtensionAPI) {
 		updateStatus(Array.from(loadedSkills), ctx);
 	};
 
-	pi.on("session_start", (_event, ctx) => {
+	pi.on("session_start", (_event: unknown, ctx: ExtensionContext) => {
 		refreshFromSession(ctx);
 	});
 
-	pi.on("session_switch", (_event, ctx) => {
+	pi.on("session_switch", (_event: unknown, ctx: ExtensionContext) => {
 		refreshFromSession(ctx);
 	});
 
-	pi.on("input", (event, ctx) => {
-		if (event.source === "extension") {
+	pi.on("input", (event: unknown, ctx: ExtensionContext) => {
+		const inputEvent = event as InputEvent;
+		if (inputEvent.source === "extension") {
 			return { action: "continue" };
 		}
 
 		const prefix = "/skill:";
-		if (!event.text.startsWith(prefix)) {
+		if (!inputEvent.text.startsWith(prefix)) {
 			return { action: "continue" };
 		}
 
-		const remainder = event.text.slice(prefix.length).trim();
+		const remainder = inputEvent.text.slice(prefix.length).trim();
 		if (!remainder) {
 			return { action: "continue" };
 		}
